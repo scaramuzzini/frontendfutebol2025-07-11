@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {useState, useEffect} from 'react';
+import AddTime from './AddTime';
 
 const headers = {
     "ngrok-skip-browser-warning": "123"
@@ -18,18 +19,21 @@ function TimesList() {
             headers: headers
         }
         ).then(function(response) {
-            console.log(response.data);
             setTimes(response.data);
         }).catch(function (error) {
-            // manipula erros da requisição
             console.error(error);
         })
         ;
     }
 
+    const handleNewTime = (novoTime) => {
+        setTimes([...times, novoTime]);
+    }
+
     return (
         <>
             <h1>Lista de Times de Futebol {times.length}</h1>
+            <AddTime onNewTime={handleNewTime} />
             <table>
                 <thead>
                     <tr>
