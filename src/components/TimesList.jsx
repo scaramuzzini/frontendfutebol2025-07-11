@@ -30,6 +30,17 @@ function TimesList() {
         setTimes([...times, novoTime]);
     }
 
+    const handleDelete = async (id) => {
+        axios.delete(`https://0cc77e37a64d.ngrok-free.app/times/${id}`, {
+            headers: headers
+        }).then(function(response) {
+            setTimes(times.filter(t=>t.id !== id));
+        }).catch(function (error) {
+            console.error(error);
+        })
+        ;
+    }
+
     return (
         <>
             <h1>Lista de Times de Futebol {times.length}</h1>
@@ -40,6 +51,7 @@ function TimesList() {
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Títulos</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,6 +61,7 @@ function TimesList() {
                                 <td>{t.id}</td>
                                 <td>{t.nome}</td>
                                 <td>{t.titulos}</td>
+                                <td>Editar | <button onClick={() => handleDelete(t.id)}>Remover</button></td>
                             </tr>
                         ))
                     }
