@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {useState, useEffect} from 'react';
 import AddTime from './AddTime';
+import EditTime from './EditTime';
+import { Toaster, toast } from 'sonner';
 
 const headers = {
     "ngrok-skip-browser-warning": "123"
@@ -9,6 +11,7 @@ const headers = {
 function TimesList() {
 
     const [times, setTimes] = useState([]);
+    const [timeEmEdicao,setTimeEmEdicao] = useState(null);
 
     useEffect(() => {
         fetchTimes();
@@ -35,16 +38,27 @@ function TimesList() {
             headers: headers
         }).then(function(response) {
             setTimes(times.filter(t=>t.id !== id));
+            toast('Time removido com sucesso');
         }).catch(function (error) {
             console.error(error);
         })
         ;
     }
 
+    const handleEdit = (time) => {
+        setTimeEmEdicao(time);
+    }
+
+    const handleTimeUpdate = (timeEmEdicao) => {
+        setTimes(times.map(t => (t.id === timeEmEdicao.id ? timeEmEdicao : t)));
+    }
+
     return (
         <>
+            <Toaster />
             <h1>Lista de Times de Futebol {times.length}</h1>
             <AddTime onNewTime={handleNewTime} />
+            <EditTime time={timeEmEdicao} onTimeEdit={handleTimeUpdate} />
             <table>
                 <thead>
                     <tr>
@@ -61,7 +75,8 @@ function TimesList() {
                                 <td>{t.id}</td>
                                 <td>{t.nome}</td>
                                 <td>{t.titulos}</td>
-                                <td>Editar | <button onClick={() => handleDelete(t.id)}>Remover</button></td>
+                                <td><button onClick={() => handleEdit(t)}>Editar</button> 
+                                | <button onClick={() => handleDelete(t.id)}>Remover</button></td>
                             </tr>
                         ))
                     }
