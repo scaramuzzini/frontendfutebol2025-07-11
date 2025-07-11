@@ -39,6 +39,7 @@ function TimesList() {
                     <tr>
                         <th>ID</th>
                         <th>Nome</th>
+                        <th>Títulos</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,6 +48,7 @@ function TimesList() {
                             <tr>
                                 <td>{t.id}</td>
                                 <td>{t.nome}</td>
+                                <td>{t.titulos}</td>
                             </tr>
                         ))
                     }
